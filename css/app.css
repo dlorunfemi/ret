@@ -1,0 +1,100 @@
+/* variables */
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+.btn_blue {
+    background: #3e7bfa;
+    color: #fff;
+    border-radius: 30px;
+    font-weight: 500 !important;
+}
+
+.btn_blue:hover {
+    background: #E81B1B;
+    color: #fff;
+}
+
+.btn_blue_outline {
+    background: transparent;
+    border: 1px solid #3e7bfa;
+    border-radius: 30px;
+    color: #3e7bfa;
+}
+
+.btn_blue_outline:hover {
+    background: #3e7bfa;
+    color: #fff;
+    transition: 300ms ease-in-out;
+}
+
+.btn_red {
+    background: #E81B1B;
+    color: #fff;
+    border-radius: 30px;
+    font-weight: 500 !important;
+}
+
+.btn_red:hover {
+    border: 1px solid #E81B1B;
+    color: #E81B1B;
+    transition: 300ms ease-in-out;
+}
+
+input {
+    border: 0.5px solid #3e7bfa !important;
+}
+
+input:focus {
+    border: 0.5px solid #3e7bfa !important;
+}
+
+.form-control:focus {
+    box-shadow: none !important;
+}
+
+input::placeholder{
+    font-size: small;
+}
+/* Variables */
+
+body {
+    margin: 0;
+    padding: 0;
+    color: #1C1C28 !important;
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+}
+
+/* Navbar */
+.navbar {
+    width: 100%;
+    min-height: 100px;
+}
+
+.nav-link {
+    font-size: 15px;
+    color: #1C1C28 !important;
+    font-weight: 500 !important;
+}
+
+.nav-link:hover {
+    color: #3e7bfa !important;
+}
+
+/* Navbar */
+
+.account_form {
+    width: 100%;
+    min-height: 80dvh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+
+
+.red {
+    border: 1px solid #3e7bfa;
+}
