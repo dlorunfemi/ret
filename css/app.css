@@ -9,7 +9,8 @@
 }
 
 .btn_blue:hover {
-    background: #E81B1B;
+    background: rgba(232, 27, 27, 0.8);
+    ;
     color: #fff;
 }
 
@@ -27,15 +28,17 @@
 }
 
 .btn_red {
-    background: #E81B1B;
+    background: rgba(232, 27, 27, 0.8);
     color: #fff;
     border-radius: 30px;
     font-weight: 500 !important;
 }
 
 .btn_red:hover {
-    border: 1px solid #E81B1B;
-    color: #E81B1B;
+    border: 1px solid rgba(232, 27, 27, 0.8);
+    ;
+    color: rgba(232, 27, 27, 0.8);
+    ;
     transition: 300ms ease-in-out;
 }
 
@@ -51,14 +54,40 @@ input:focus {
     box-shadow: none !important;
 }
 
-input::placeholder{
+input::placeholder {
     font-size: small;
 }
+
+.card {
+    background: rgb(255, 255, 255);
+    box-shadow: inset 0 0 4px rgba(0, 0, 0, .05) !important;
+}
+
+.eye-icon {
+    cursor: pointer;
+    color: #666;
+    /* font-size: 20px; */
+    transition: color 0.2s;
+}
+
+.eye-icon:hover {
+    color: #333;
+}
+
+/* .active {
+    background-color: rgba(62, 123, 250, 0.4) !important;
+} */
+
+#toggleVisibility {
+    cursor: pointer;
+}
+
 /* Variables */
 
 body {
     margin: 0;
     padding: 0;
+    background: #fbfef9 !important;
     color: #1C1C28 !important;
     font-family: "Inter", sans-serif;
     font-optical-sizing: auto;
@@ -83,6 +112,7 @@ body {
 
 /* Navbar */
 
+/* Account */
 .account_form {
     width: 100%;
     min-height: 80dvh;
@@ -91,10 +121,33 @@ body {
     align-items: center;
 }
 
+.account_overview {
+    width: 100%;
+    min-height: 60dvh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.list-group-item {
+    border: none !important;
+}
+
+.list-group-item:hover {
+    background-color: rgba(62, 121, 250, 0.4);
+    color: #3e7bfa;
+    transition: 300ms ease-in-out;
+}
+
+/* Account */
 
 
 
 
 .red {
     border: 1px solid #3e7bfa;
+}
+
+.blue {
+    border: 1px solid red;
 }
