@@ -74,12 +74,24 @@ input::placeholder {
     color: #333;
 }
 
-/* .active {
-    background-color: rgba(62, 123, 250, 0.4) !important;
-} */
-
 #toggleVisibility {
     cursor: pointer;
+}
+
+#card_hover:hover {
+    background-color: rgba(62, 121, 250, 0.4);
+    transition: 300ms ease-in-out;
+    color: #fff;
+}
+
+.table {
+    font-size: 12px;
+    /* font-weight: 200; */
+}
+
+.blue_text {
+    color: rgba(62, 121, 250, 0.4);
+    ;
 }
 
 /* Variables */

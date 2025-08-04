@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Basic Meta Tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Primary Meta Tags -->
+    <title>App - Retrixnet</title>
+    <meta name="title" content="App - Retrixnet">
+    <meta name="description" content="A concise, compelling description of your page's content (150-160 characters).">
+    <meta name="keywords" content="keyword1, keyword2, keyword3">
+    <meta name="author" content="Your Name">
+
+    <!-- Open Graph / Facebook (for social sharing) -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yourwebsite.com/page-url/">
+    <meta property="og:title" content="App - Retrixnet">
+    <meta property="og:description"
+        content="A concise, compelling description of your page's content (150-160 characters).">
+    <meta property="og:image" content="https://yourwebsite.com/images/social-preview-image.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://yourwebsite.com/page-url/">
+    <meta property="twitter:title" content="App - Retrixnet">
+    <meta property="twitter:description"
+        content="A concise, compelling description of your page's content (150-160 characters).">
+    <meta property="twitter:image" content="https://yourwebsite.com/images/social-preview-image.jpg">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Your custom CSS -->
+    <link href="css/app.css" rel="stylesheet">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <img src="img/logo.png" alt="Logo">
+            </a>
+            <button class="navbar-toggler border border-0" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 gap-3">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link " href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Insight<i class="ri-arrow-down-s-line"></i>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">About Us</a></li>
+                            <li><a class="dropdown-item" href="#">Terms & conditions</a></li>
+                            <li><a class="dropdown-item" href="#">Privacy Policy</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="#">Account</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Roadmap</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link">Contact Us</a>
+                    </li>
+
+                </ul>
+                <div class="d-flex mx-3">
+                    <a href="login.html" class="btn btn_blue_outline px-5" type="submit">Login</a>
+                    <a href="signup.html" class="btn btn_red ms-3 px-5" type="submit">Signup</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- Navbar -->
+
+    <!-- Account Overview -->
+    <div class="account_overview">
+        <div class="container">
+            <div class="col-lg-10 mx-auto">
+                <div class="row g-3">
+                    <div class="col-lg-3">
+                        <div class="card border-0">
+                            <div class="card-body p-0">
+                                <div class="list-group">
+                                    <a href="dashboard.html" class="list-group-item"><img src="img/overview.png"
+                                            width="20" height="20" alt="Overview">
+                                        Overview</a>
+                                    <a href="assets.html" class="list-group-item active"><img src="img/assets.png"
+                                            width="20" height="20" alt="Assets"> Assets</a>
+                                    <a href="deposit.html" class="list-group-item"><img src="img/deposit.png" width="20"
+                                            height="20" alt="Deposit">
+                                        Deposit</a>
+                                    <a href="withdrawal.html" class="list-group-item"><img src="img/withdraw.png"
+                                            width="20" height="20" alt="Withdrawal">
+                                        Withdrawal</a>
+                                    <a href="deposit_records.html" class="list-group-item"><img
+                                            src="img/deposit-records.png" width="20" height="20" alt="Deposit"> Deposit
+                                        Records</a>
+                                    <a href="withdrawal_records.html" class="list-group-item"><img
+                                            src="img/withdraw-record.png" width="20" height="20" alt="withdraw records">
+                                        Withdrawal
+                                        Records</a>
+                                    <a href="transfer_history.html" class="list-group-item"><img
+                                            src="img/transfer-history.png" width="20" height="20"
+                                            alt="Transfer History"> Transfer
+                                        History</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-9">
+                        <h4 class="fw-bold"><img src="img/assets.png" width="60" height="60" alt=""> Assets</h4>
+                        <div class="card border-0">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <p class="muted"><small>Est. Total Assets (USDT) <i class="ri-eye-line mx-2"
+                                                    id="toggleVisibility"></i></span></small>
+                                        </p>
+                                        <h4 class="hidden-balance fw-bold" id="balance">0.000 ≈ 0.00 USD</h4>
+                                    </div>
+                                    <div class="col-lg-6 m-auto">
+                                        <a href="" class="btn btn_red px-4"><i class="ri-corner-down-right-fill"></i>
+                                            Deposit
+                                            Crypto</a>
+                                        <a href="" class="btn btn_blue_outline px-4"><i
+                                                class="ri-user-community-line"></i>
+                                            Buy
+                                            Crypto</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Assets Table -->
+                        <div class="row g-3 mt-3">
+                            <div class="col-lg-12">
+                                <div class="card border-0">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <small class="text-muted">All Assets</small>
+                                            <table class="table align-middle">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">Coin</th>
+                                                        <th scope="col">Amount</th>
+                                                        <th scope="col">Value</th>
+                                                        <th scope="col">Frozen</th>
+                                                        <th scope="col">Operation</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <!-- 1 -->
+                                                    <tr>
+                                                        <th scope="row">
+                                                            <div class="d-flex align-items-center gap-2">
+                                                                <div class="col-auto">
+                                                                    <img src="img/icon/tether.png" width="25"
+                                                                        height="25" alt="Tether">
+                                                                </div>
+                                                                <div class="col-auto">
+                                                                    <p class="my-auto">USDT</p>
+                                                                    <small class="text-muted">Tether</small>
+                                                                </div>
+                                                            </div>
+                                                        </th>
+                                                        <td>0</td>
+                                                        <td>0.00 USD</td>
+                                                        <td>0.00 USD</td>
+                                                        <td>
+                                                            <a href=""
+                                                                class="badge text-bg-success text-decoration-none px-3 py-2">Deposit</a>
+                                                            <a href=""
+                                                                class="badge text-bg-danger text-decoration-none px-3 py-2">Withdraw</a>
+                                                        </td>
+                                                    </tr>
+                                                    <!-- 1 -->
+
+                                                    <!-- 2 -->
+                                                    <tr>
+                                                        <th scope="row">
+                                                            <div class="d-flex align-items-center gap-2">
+                                                                <div class="col-auto">
+                                                                    <img src="img/icon/usdc.png" width="25" height="25"
+                                                                        alt="Tether">
+                                                                </div>
+                                                                <div class="col-auto">
+                                                                    <p class="my-auto">USDC</p>
+                                                                    <small class="text-muted">USDC</small>
+                                                                </div>
+                                                            </div>
+                                                        </th>
+                                                        <td>0</td>
+                                                        <td>0.00 USD</td>
+                                                        <td>0.00 USD</td>
+                                                        <td>
+                                                            <a href=""
+                                                                class="badge text-bg-success text-decoration-none px-3">Deposit</a>
+                                                            <a href=""
+                                                                class="badge text-bg-danger text-decoration-none px-3">Withdraw</a>
+                                                        </td>
+                                                    </tr>
+                                                    <!-- 2 -->
+
+                                                    <!-- 3 -->
+                                                    <tr>
+                                                        <th scope="row">
+                                                            <div class="d-flex align-items-center gap-2">
+                                                                <div class="col-auto">
+                                                                    <img src="img/icon/btc.png" width="25"
+                                                                        height="25" alt="Tether">
+                                                                </div>
+                                                                <div class="col-auto">
+                                                                    <p class="my-auto">BTC</p>
+                                                                    <small class="text-muted">BTC</small>
+                                                                </div>
+                                                            </div>
+                                                        </th>
+                                                        <td>0</td>
+                                                        <td>0.00 USD</td>
+                                                        <td>0.00 USD</td>
+                                                        <td>
+                                                            <a href=""
+                                                                class="badge text-bg-success text-decoration-none px-3">Deposit</a>
+                                                            <a href=""
+                                                                class="badge text-bg-danger text-decoration-none px-3">Withdraw</a>
+                                                        </td>
+                                                    </tr>
+                                                    <!-- 3 -->
+
+                                                    <!-- 4 -->
+                                                    <tr>
+                                                        <th scope="row">
+                                                            <div class="d-flex align-items-center gap-2">
+                                                                <div class="col-auto">
+                                                                    <img src="img/icon/eth.png" width="25"
+                                                                        height="25" alt="Tether">
+                                                                </div>
+                                                                <div class="col-auto">
+                                                                    <p class="my-auto">ETH</p>
+                                                                    <small class="text-muted">ETH</small>
+                                                                </div>
+                                                            </div>
+                                                        </th>
+                                                        <td>0</td>
+                                                        <td>0.00 USD</td>
+                                                        <td>0.00 USD</td>
+                                                        <td>
+                                                            <a href=""
+                                                                class="badge text-bg-success text-decoration-none px-3">Deposit</a>
+                                                            <a href=""
+                                                                class="badge text-bg-danger text-decoration-none px-3">Withdraw</a>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Assets Table -->
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+    <!-- Account Overview -->
+
+
+
+
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Your custom JS -->
+    <script src="js/scripts.js"></script>
+
+
+    <script>
+        const balanceElement = document.getElementById('balance');
+        const toggleButton = document.getElementById('toggleVisibility');
+        let isVisible = true;
+        const originalBalance = balanceElement.textContent;
+
+        // Create asterisks of similar length to the original balance
+        const hiddenBalance = originalBalance.replace(/[^\s]/g, '*');
+
+        toggleButton.addEventListener('click', function () {
+            isVisible = !isVisible;
+
+            if (isVisible) {
+                balanceElement.textContent = originalBalance;
+                toggleButton.classList.remove('ri-eye-close-line');
+                toggleButton.classList.add('ri-eye-line');
+            } else {
+                balanceElement.textContent = hiddenBalance;
+                toggleButton.classList.remove('ri-eye-line');
+                toggleButton.classList.add('ri-eye-close-line');
+            }
+        });
+    </script>
+</body>
+
+</html>
