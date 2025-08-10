@@ -50,6 +50,22 @@ input:focus {
     border: 0.5px solid #3e7bfa !important;
 }
 
+select {
+    border: 0.5px solid #3e7bfa !important;
+}
+
+select:focus {
+    border: 0.5px solid #3e7bfa !important;
+}
+
+select::placeholder {
+    font-size: small;
+}
+
+.form-select:focus {
+    box-shadow: none !important;
+}
+
 .form-control:focus {
     box-shadow: none !important;
 }
@@ -153,6 +169,76 @@ body {
 
 /* Account */
 
+/* Select coin */
+.bg-gradient-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.bg-gradient-blue {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.coin-select-btn {
+    transition: all 0.3s ease;
+}
+
+.coin-select-btn:hover {
+    border-color: #4facfe !important;
+    box-shadow: 0 4px 15px rgba(79, 172, 254, 0.2);
+}
+
+.coin-select-btn.active {
+    border-color: #4facfe !important;
+    box-shadow: 0 0 0 0.2rem rgba(79, 172, 254, 0.25);
+}
+
+.dropdown-arrow {
+    transition: transform 0.3s ease;
+}
+
+.dropdown-arrow.rotated {
+    transform: rotate(180deg);
+}
+
+.coin-dropdown {
+    display: none;
+}
+
+.coin-dropdown.show {
+    display: block;
+}
+
+.coin-option:hover {
+    background-color: #f8f9fa;
+}
+
+.network-card {
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.network-card:hover {
+    border-color: #4facfe !important;
+    box-shadow: 0 4px 15px rgba(79, 172, 254, 0.1);
+    transform: translateY(-2px);
+}
+
+.network-card.selected {
+    border-color: #4facfe !important;
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    color: white;
+}
+
+.network-card.selected .network-icon {
+    background-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+.step-number {
+    width: 30px;
+    height: 30px;
+}
+
+/* Select coin */
 
 
 
