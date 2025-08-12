@@ -1,239 +1,107 @@
-// Network configurations for each coin
-const coinNetworks = {
-    usdt: [
-        {
-            name: 'USDT',
-            description: 'Native USDT network',
-            icon: 'fas fa-coins',
-            color: '#0033ad',
-            id: 'usdt-native'
-        }
-    ],
-    usdc: [
-        {
-            name: 'Ethereum (ERC20)',
-            description: 'Standard Ethereum network',
-            icon: 'fab fa-ethereum',
-            color: '#627eea',
-            id: 'eth-erc20'
-        },
-        {
-            name: 'Solana',
-            description: 'Fast & low fees',
-            icon: 'fas fa-sun',
-            color: '#9945ff',
-            id: 'solana'
-        },
-        {
-            name: 'Polygon',
-            description: 'Layer 2 solution',
-            icon: 'fas fa-layer-group',
-            color: '#8247e5',
-            id: 'polygon'
-        },
-        {
-            name: 'Avalanche',
-            description: 'High throughput',
-            icon: 'fas fa-mountain',
-            color: '#e84142',
-            id: 'avalanche'
-        }
-    ],
-    bitcoin: [
-        {
-            name: 'Bitcoin',
-            description: 'Native Bitcoin network',
-            icon: 'fab fa-bitcoin',
-            color: '#f7931a',
-            id: 'bitcoin-native'
-        },
-        {
-            name: 'Lightning Network',
-            description: 'Instant payments',
-            icon: 'fas fa-bolt',
-            color: '#ffd700',
-            id: 'bitcoin-lightning'
-        }
-    ],
-    ethereum: [
-        {
-            name: 'Ethereum',
-            description: 'Native Ethereum network',
-            icon: 'fab fa-ethereum',
-            color: '#627eea',
-            id: 'ethereum-native'
-        },
-        {
-            name: 'Arbitrum',
-            description: 'Layer 2 scaling',
-            icon: 'fas fa-arrow-up',
-            color: '#28a0f0',
-            id: 'arbitrum'
-        },
-        {
-            name: 'Optimism',
-            description: 'Optimistic rollups',
-            icon: 'fas fa-rocket',
-            color: '#ff0420',
-            id: 'optimism'
-        }
-    ],
-    solana: [
-        {
-            name: 'Solana',
-            description: 'Native Solana network',
-            icon: 'fas fa-sun',
-            color: '#9945ff',
-            id: 'solana-native'
-        }
-    ],
-    cardano: [
-        {
-            name: 'Cardano',
-            description: 'Native Cardano network',
-            icon: 'fas fa-coins',
-            color: '#0033ad',
-            id: 'cardano-native'
-        }
-    ]
+const selectedCoin = document.getElementById('selectedCoin');
+const coinDropdown = document.getElementById('coinDropdown');
+const searchCoin = document.getElementById('searchCoin');
+const coinItems = document.querySelectorAll('.coin-item');
+const networkSection = document.getElementById('networkSection');
+const networkContainer = document.getElementById('networkContainer');
+const networkLoader = document.getElementById('networkLoader');
+const assetCoin = document.getElementById('assetCoin');
+const assetCoin2 = document.getElementById('assetCoin2');
+
+// Attention panel fields
+const minDepositEl = document.getElementById('minDeposit');
+const depositConfEl = document.getElementById('depositConf');
+const withdrawalConfEl = document.getElementById('withdrawalConf');
+
+const networks = {
+    USDT: ["BSC (BEP20)", "TRON (TRC20)", "Ethereum (ERC20)", "Solana"],
+    BTC: ["Bitcoin Mainnet", "Lightning Network"],
+    ETH: ["Ethereum Mainnet", "Polygon", "Arbitrum"]
 };
 
-document.addEventListener('DOMContentLoaded', function () {
-    const selectBtn = document.getElementById('coinSelectBtn');
-    const dropdown = document.getElementById('coinDropdown');
-    const dropdownArrow = document.getElementById('dropdownArrow');
-    const selectedIcon = document.getElementById('selectedIcon');
-    const selectedName = document.getElementById('selectedName');
-    const selectedSymbol = document.getElementById('selectedSymbol');
-    const coinOptions = document.querySelectorAll('.coin-option');
-    const networkGrid = document.getElementById('networkGrid');
+const networkInfo = {
+    "BSC (BEP20)": { min: "0.5 USDT", depositConf: "12 Confirmation(s)", withdrawalConf: "30 Confirmation(s)" },
+    "TRON (TRC20)": { min: "1 USDT", depositConf: "10 Confirmation(s)", withdrawalConf: "25 Confirmation(s)" },
+    "Ethereum (ERC20)": { min: "5 USDT", depositConf: "15 Confirmation(s)", withdrawalConf: "40 Confirmation(s)" },
+    "Solana": { min: "0.2 USDT", depositConf: "8 Confirmation(s)", withdrawalConf: "20 Confirmation(s)" },
+    "Bitcoin Mainnet": { min: "0.0005 BTC", depositConf: "2 Confirmation(s)", withdrawalConf: "6 Confirmation(s)" },
+    "Lightning Network": { min: "0.0001 BTC", depositConf: "Instant", withdrawalConf: "Instant" },
+    "Ethereum Mainnet": { min: "0.05 ETH", depositConf: "15 Confirmation(s)", withdrawalConf: "40 Confirmation(s)" },
+    "Polygon": { min: "1 MATIC", depositConf: "12 Confirmation(s)", withdrawalConf: "25 Confirmation(s)" },
+    "Arbitrum": { min: "0.05 ETH", depositConf: "15 Confirmation(s)", withdrawalConf: "35 Confirmation(s)" }
+};
 
-    let selectedNetwork = null;
+// Show loader while fetching networks
+function loadNetworks(coin) {
+    networkContainer.innerHTML = '';
+    networkLoader.style.display = 'block';
 
-    // Initialize Bootstrap tooltips
-    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-    const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl);
-    });
+    setTimeout(() => {
+        networkLoader.style.display = 'none';
+        if (networks[coin]) {
+            networks[coin].forEach(net => {
+                const col = document.createElement('div');
+                col.classList.add('col-6');
+                const btn = document.createElement('div');
+                btn.classList.add('network-btn');
+                btn.textContent = net;
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.network-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
 
-    // Initialize with USDC networks
-    updateNetworks('usdc');
-
-    // Toggle dropdown
-    selectBtn.addEventListener('click', function (e) {
-        e.stopPropagation();
-        const isOpen = dropdown.classList.contains('show');
-
-        if (isOpen) {
-            closeDropdown();
-        } else {
-            openDropdown();
-        }
-    });
-
-    // Handle coin selection
-    coinOptions.forEach(option => {
-        option.addEventListener('click', function () {
-            const coinId = this.getAttribute('data-coin-id');
-            const coinIconEl = this.querySelector('.coin-icon');
-            const coinNameEl = this.querySelector('.fw-bold');
-            const coinSymbolEl = this.querySelector('small');
-
-            // Update selected display
-            selectedIcon.innerHTML = coinIconEl.innerHTML;
-            selectedIcon.style.background = coinIconEl.style.background;
-            selectedName.textContent = coinNameEl.textContent;
-            selectedSymbol.textContent = coinSymbolEl.textContent;
-
-            // Update networks for selected coin
-            updateNetworks(coinId);
-
-            // Close dropdown
-            closeDropdown();
-        });
-    });
-
-    // Close dropdown when clicking outside
-    document.addEventListener('click', function (e) {
-        if (!selectBtn.contains(e.target) && !dropdown.contains(e.target)) {
-            closeDropdown();
-        }
-    });
-
-    // Keyboard navigation
-    selectBtn.addEventListener('keydown', function (e) {
-        if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            selectBtn.click();
-        } else if (e.key === 'Escape') {
-            closeDropdown();
-        }
-    });
-
-    function openDropdown() {
-        dropdown.classList.add('show');
-        selectBtn.classList.add('active');
-        dropdownArrow.classList.add('rotated');
-        selectBtn.setAttribute('aria-expanded', 'true');
-    }
-
-    function closeDropdown() {
-        dropdown.classList.remove('show');
-        selectBtn.classList.remove('active');
-        dropdownArrow.classList.remove('rotated');
-        selectBtn.setAttribute('aria-expanded', 'false');
-    }
-
-    function updateNetworks(coinId) {
-        const networks = coinNetworks[coinId] || [];
-        selectedNetwork = null;
-
-        networkGrid.innerHTML = '';
-
-        networks.forEach(network => {
-            const col = document.createElement('div');
-            col.className = 'col-sm-6 col-lg-4';
-
-            const networkCard = document.createElement('div');
-            networkCard.className = 'network-card card border-2 text-center p-3';
-            networkCard.setAttribute('data-network-id', network.id);
-
-            networkCard.innerHTML = `
-                        <div class="network-icon rounded-2 d-flex align-items-center justify-content-center text-white fs-5 mx-auto mb-2" 
-                             style="width: 40px; height: 40px; background: ${network.color};">
-                            <i class="${network.icon}"></i>
-                        </div>
-                        <div class="fw-bold mb-1">${network.name}</div>
-                        <small class="text-muted">${network.description}</small>
-                    `;
-
-            networkCard.addEventListener('click', function () {
-                // Remove selected class from all networks
-                document.querySelectorAll('.network-card').forEach(card => {
-                    card.classList.remove('selected');
+                    const info = networkInfo[net];
+                    if (info) {
+                        minDepositEl.textContent = info.min;
+                        depositConfEl.textContent = info.depositConf;
+                        withdrawalConfEl.textContent = info.withdrawalConf;
+                    }
                 });
-
-                // Add selected class to clicked network
-                this.classList.add('selected');
-                selectedNetwork = network.id;
-
-                console.log('Selected network:', selectedNetwork);
+                col.appendChild(btn);
+                networkContainer.appendChild(col);
             });
-
-            col.appendChild(networkCard);
-            networkGrid.appendChild(col);
-        });
-
-        // Auto-select first network if only one is available
-        if (networks.length === 1) {
-            setTimeout(() => {
-                networkGrid.querySelector('.network-card').click();
-            }, 100);
         }
-    }
+    }, 800); // simulate loader delay
+}
 
-    // Initialize accessibility attributes
-    selectBtn.setAttribute('aria-expanded', 'false');
-    selectBtn.setAttribute('role', 'combobox');
-    dropdown.setAttribute('role', 'listbox');
+selectedCoin.addEventListener('click', () => {
+    coinDropdown.style.display = coinDropdown.style.display === 'block' ? 'none' : 'block';
+});
+
+coinItems.forEach(item => {
+    item.addEventListener('click', () => {
+        const coin = item.dataset.coin;
+        selectedCoin.querySelector('span').textContent = coin;
+        assetCoin.textContent = coin;
+        assetCoin2.textContent = coin;
+        coinDropdown.style.display = 'none';
+        loadNetworks(coin);
+    });
+});
+
+// Handle History and Popular Coins badges
+document.querySelectorAll('.coin-badge').forEach(badge => {
+    badge.addEventListener('click', () => {
+        const coin = badge.textContent.trim();
+        selectedCoin.querySelector('span').textContent = coin;
+        assetCoin.textContent = coin;
+        assetCoin2.textContent = coin;
+        coinDropdown.style.display = 'none';
+        loadNetworks(coin);
+    });
+});
+
+
+searchCoin.addEventListener('input', () => {
+    const filter = searchCoin.value.toLowerCase();
+    coinItems.forEach(item => {
+        item.style.display = item.textContent.toLowerCase().includes(filter) ? '' : 'none';
+    });
+});
+
+// On page load, show USDT as default
+document.addEventListener('DOMContentLoaded', () => {
+    selectedCoin.querySelector('span').textContent = 'USDT';
+    assetCoin.textContent = 'USDT';
+    assetCoin2.textContent = 'USDT';
+    loadNetworks('USDT');
 });

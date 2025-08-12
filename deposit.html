@@ -131,131 +131,94 @@
                                 <div class="row">
                                     <div class="col-lg-7">
                                         <small class="fw-bold">Select coin/token and transfer mode</small>
-                                        <div class="card-body p-4 p-md-5">
-                                            <!-- Step 1: Select Coin/Token -->
-                                            <div class="mb-5">
-                                                <div class="d-flex align-items-center mb-4">
-                                                    <div
-                                                        class="step-number bg-gradient-blue text-white rounded-circle d-flex align-items-center justify-content-center fw-bold me-3">
-                                                        1
-                                                    </div>
-                                                    <h3 class="mb-0 fw-bold text-dark">Select Coin/Token</h3>
-                                                </div>
 
-                                                <div class="position-relative">
-                                                    <button type="button"
-                                                        class="coin-select-btn btn btn-outline-secondary d-flex justify-content-between align-items-center w-100 p-3 border-2"
-                                                        id="coinSelectBtn" style="border-radius: 12px;">
-                                                        <div class="d-flex align-items-center">
-                                                            <div class="coin-icon rounded-circle d-flex align-items-center justify-content-center text-white fw-bold me-3"
-                                                                style="width: 32px; height: 32px; background: #2775ca;"
-                                                                id="selectedIcon">
-                                                                <i class="fas fa-dollar-sign"></i>
-                                                            </div>
-                                                            <div class="text-start">
-                                                                <div class="fw-bold text-dark" id="selectedName">USDT
-                                                                </div>
-                                                                <small class="text-muted"
-                                                                    id="selectedSymbol">Tether</small>
-                                                            </div>
-                                                        </div>
-                                                        <i class="ri-arrow-down-s-line dropdown-arrow text-muted"
-                                                            id="dropdownArrow"></i>
-                                                    </button>
+                                        <!-- Left side: Steps -->
 
-                                                    <div class="coin-dropdown position-absolute w-100 bg-white border border-2 border-top-0 shadow-lg"
-                                                        style="top: 100%; border-radius: 0 0 12px 12px; z-index: 1000; max-height: 300px; overflow-y: auto;"
-                                                        id="coinDropdown">
-
-                                                        <div class="coin-option d-flex align-items-center p-3"
-                                                            data-coin-id="usdt" style="cursor: pointer;">
-                                                            <div class="coin-icon rounded-circle d-flex align-items-center justify-content-center text-white fw-bold me-3"
-                                                                style="width: 32px; height: 32px; background: #0033ad;">
-                                                                <i class="fas fa-coins"></i>
-                                                            </div>
-                                                            <div>
-                                                                <div class="fw-bold">USDT</div>
-                                                                <small class="text-muted">Tether</small>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="coin-option d-flex align-items-center p-3 border-bottom"
-                                                            data-coin-id="usdc" style="cursor: pointer;">
-                                                            <div class="coin-icon rounded-circle d-flex align-items-center justify-content-center text-white fw-bold me-3"
-                                                                style="width: 32px; height: 32px; background: #2775ca;">
-                                                                <i class="fas fa-dollar-sign"></i>
-                                                            </div>
-                                                            <div>
-                                                                <div class="fw-bold">USDC</div>
-                                                                <small class="text-muted">USDC</small>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="coin-option d-flex align-items-center p-3 border-bottom"
-                                                            data-coin-id="bitcoin" style="cursor: pointer;">
-                                                            <div class="coin-icon rounded-circle d-flex align-items-center justify-content-center text-white fw-bold me-3"
-                                                                style="width: 32px; height: 32px; background: #f7931a;">
-                                                                <i class="fab fa-bitcoin"></i>
-                                                            </div>
-                                                            <div>
-                                                                <div class="fw-bold">Bitcoin</div>
-                                                                <small class="text-muted">BTC</small>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="coin-option d-flex align-items-center p-3 border-bottom"
-                                                            data-coin-id="ethereum" style="cursor: pointer;">
-                                                            <div class="coin-icon rounded-circle d-flex align-items-center justify-content-center text-white fw-bold me-3"
-                                                                style="width: 32px; height: 32px; background: #627eea;">
-                                                                <i class="fab fa-ethereum"></i>
-                                                            </div>
-                                                            <div>
-                                                                <div class="fw-bold">Ethereum</div>
-                                                                <small class="text-muted">ETH</small>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="coin-option d-flex align-items-center p-3 border-bottom"
-                                                            data-coin-id="solana" style="cursor: pointer;">
-                                                            <div class="coin-icon rounded-circle d-flex align-items-center justify-content-center text-white fw-bold me-3"
-                                                                style="width: 32px; height: 32px; background: #9945ff;">
-                                                                <i class="fas fa-sun"></i>
-                                                            </div>
-                                                            <div>
-                                                                <div class="fw-bold">Solana</div>
-                                                                <small class="text-muted">SOL</small>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                        <!-- Step 1: Select Coin/Token -->
+                                        <div class="d-flex align-items-center mb-4">
+                                            <div
+                                                class="step-number bg-gradient-blue text-white rounded-circle d-flex align-items-center justify-content-center fw-bold me-3">
+                                                1
                                             </div>
+                                            <h6 class="mb-0 fw-bold text-dark">Select Coin/Token</h6>
+                                        </div>
+                                        <div class="custom-dropdown mb-4">
+                                            <div class="form-control d-flex align-items-center justify-content-between"
+                                                id="selectedCoin" style="cursor:pointer;">
+                                                <span>Select Coin/Token</span>
+                                                <span><i class="ri-arrow-down-s-line"></i></span>
+                                            </div>
+                                            <div class="dropdown-panel" id="coinDropdown">
+                                                <input type="text" class="form-control mb-3"
+                                                    placeholder="Search by coin/token" id="searchCoin">
 
-                                            <!-- Step 2: Generate Deposit Address -->
-                                            <div class="mb-4">
-                                                <div class="d-flex align-items-center mb-4">
-                                                    <div
-                                                        class="step-number bg-gradient-blue text-white rounded-circle d-flex align-items-center justify-content-center fw-bold me-3">
-                                                        2
-                                                    </div>
-                                                    <h3 class="mb-0 fw-bold text-dark">Generate Deposit Address</h3>
+                                                <div>
+                                                    <small class="text-muted">History</small><br>
+                                                    <span class="coin-badge">USDT</span>
+                                                    <span class="coin-badge">BTC</span>
                                                 </div>
 
-                                                <div class="mb-3">
-                                                    <div class="d-flex align-items-center">
-                                                        <span class="fw-medium">Select Network</span>
-                                                        <i class="fas fa-info-circle text-muted ms-2"
-                                                            title="Choose the blockchain network for your deposit"
-                                                            data-bs-toggle="tooltip"></i>
-                                                    </div>
+                                                <div class="mt-3">
+                                                    <small class="text-muted">Popular Coins 🔥</small><br>
+                                                    <span class="coin-badge">USDT</span>
+                                                    <span class="coin-badge">ETH</span>
+                                                    <span class="coin-badge">DOGE</span>
+                                                    <span class="coin-badge">BTC</span>
                                                 </div>
 
-                                                <div class="row g-3" id="networkGrid">
-                                                    <!-- Networks will be populated dynamically -->
+                                                <div class="mt-3">
+                                                    <small class="text-muted">Crypto List</small>
+                                                    <div id="coinList">
+                                                        <div class="coin-item" data-coin="USDT"><img
+                                                                src="img/icon/tether.png" alt=""> USDT - Tether
+                                                        </div>
+                                                        <div class="coin-item" data-coin="BTC"><img
+                                                                src="img/icon/btc.png" alt=""> BTC - Bitcoin</div>
+                                                        <div class="coin-item" data-coin="ETH"><img
+                                                                src="img/icon/eth.png" alt=""> ETH - Ethereum</div>
+                                                        <div class="coin-item" data-coin="USDC"><img
+                                                                src="img/icon/usdc.png" alt=""> USDC - USD Coin
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
+
+                                        <!-- Step 2 -->
+                                        <div class="mt-4" id="networkSection">
+                                            <div class="d-flex align-items-center mb-4">
+                                                <div
+                                                    class="step-number bg-gradient-blue text-white rounded-circle d-flex align-items-center justify-content-center fw-bold me-3">
+                                                    2
+                                                </div>
+                                                <h6 class="mb-0 fw-bold text-dark">Select Network</h6>
+                                            </div>
+                                            <div class="loader" id="networkLoader">
+                                                <span></span><span></span><span></span>
+                                            </div>
+                                            <div class="row g-3" id="networkContainer"></div>
+                                        </div>
+                                        <!-- Left side: Steps -->
                                     </div>
-                                    <div class="col-lg-5"></div>
+                                    <div class="col-lg-5">
+                                        <h6 class="fw-bold">Total Assets</h6>
+                                        <p class="mb-1 text-muted">Available: 0 <span id="assetCoin">USDT</span></p>
+                                        <p class="mb-3 text-muted">Frozen: 0 <span id="assetCoin2">USDT</span></p>
+
+                                        <h6 class="fw-bold">Attention</h6>
+                                        <p class="mb-1">Minimum deposit: <span class="text-warning"
+                                                id="minDeposit">0.086</span></p>
+                                        <p class="mb-1">Deposit arrival: <span class="text-warning" id="depositConf">12
+                                                Confirmation(s)</span></p>
+                                        <p class="mb-3">Withdrawal unlock: <span class="text-warning"
+                                                id="withdrawalConf">30 Confirmation(s)</span>
+                                        </p>
+
+
+                                        <h6 class="fw-bold">FAQ</h6>
+                                        <p class="mb-1"><a href="#">Deposit uncredited?</a></p>
+                                        <p class="mb-1"><a href="#">How to choose the public chain?</a></p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -265,6 +228,24 @@
         </div>
     </div>
     <!-- Account Overview -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
