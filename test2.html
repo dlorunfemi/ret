@@ -2,10 +2,10 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Deposit UI</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
 
   <style>
@@ -70,7 +70,6 @@
       margin: 3px;
       cursor: pointer;
       font-size: 14px;
-
     }
 
     .coin-item {
@@ -121,11 +120,65 @@
       width: 30px;
       height: 30px;
     }
+
+    /* Wallet item styling */
+    .wallet-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border: 1px solid #ddd;
+      padding: 10px;
+      border-radius: 8px;
+      justify-content: space-between;
+    }
+
+    .wallet-info {
+      flex-grow: 1;
+    }
+
+    .wallet-address {
+      font-family: monospace;
+      user-select: all;
+    }
+
+    .copy-btn {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      color: #0d6efd;
+      font-size: 1.25rem;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+    }
+
+    .copy-tooltip {
+      position: absolute;
+      top: -25px;
+      right: 50%;
+      transform: translateX(50%);
+      background-color: #333;
+      color: #fff;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+      white-space: nowrap;
+      z-index: 100;
+    }
+
+    .copy-tooltip.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
   </style>
 </head>
 
 <body class="p-4">
-
   <div class="container">
     <div class="row">
       <!-- Left side: Steps -->
@@ -145,16 +198,16 @@
             <span><i class="ri-arrow-down-s-line"></i></span>
           </div>
           <div class="dropdown-panel" id="coinDropdown">
-            <input type="text" class="form-control mb-3" placeholder="Search by coin/token" id="searchCoin">
+            <input type="text" class="form-control mb-3" placeholder="Search by coin/token" id="searchCoin" />
 
             <div>
-              <small class="text-muted">History</small><br>
+              <small class="text-muted">History</small><br />
               <span class="coin-badge">USDT</span>
               <span class="coin-badge">BTC</span>
             </div>
 
             <div class="mt-3">
-              <small class="text-muted">Popular Coins 🔥</small><br>
+              <small class="text-muted">Popular Coins 🔥</small><br />
               <span class="coin-badge">USDT</span>
               <span class="coin-badge">ETH</span>
               <span class="coin-badge">DOGE</span>
@@ -164,10 +217,10 @@
             <div class="mt-3">
               <small class="text-muted">Crypto List</small>
               <div id="coinList">
-                <div class="coin-item" data-coin="USDT"><img src="img/icon/tether.png" alt=""> USDT - Tether</div>
-                <div class="coin-item" data-coin="BTC"><img src="img/icon/btc.png" alt=""> BTC - Bitcoin</div>
-                <div class="coin-item" data-coin="ETH"><img src="img/icon/eth.png" alt=""> ETH - Ethereum</div>
-                <div class="coin-item" data-coin="USDC"><img src="img/icon/usdc.png" alt=""> USDC - USD Coin</div>
+                <div class="coin-item" data-coin="USDT"><img src="img/icon/tether.png" alt="" /> USDT - Tether</div>
+                <div class="coin-item" data-coin="BTC"><img src="img/icon/btc.png" alt="" /> BTC - Bitcoin</div>
+                <div class="coin-item" data-coin="ETH"><img src="img/icon/eth.png" alt="" /> ETH - Ethereum</div>
+                <div class="coin-item" data-coin="USDC"><img src="img/icon/usdc.png" alt="" /> USDC - USD Coin</div>
               </div>
             </div>
           </div>
@@ -187,7 +240,6 @@
           </div>
           <div class="row g-3" id="networkContainer"></div>
         </div>
-
       </div>
       <!-- Left side: Steps -->
 
@@ -205,8 +257,16 @@
             <p class="mb-3">Withdrawal unlock: <span class="text-warning" id="withdrawalConf">30 Confirmation(s)</span>
             </p>
 
+            <!-- New Wallets Section -->
+            <h6 class="fw-bold mt-4">Wallets</h6>
+            <div id="walletsContainer" class="d-flex flex-column gap-3">
+              <!-- Wallets will be dynamically inserted here -->
+            </div>
+            <div class="loader" id="walletLoader" style="display:none;">
+              <span></span><span></span><span></span>
+            </div>
 
-            <h6 class="fw-bold">FAQ</h6>
+            <h6 class="fw-bold mt-4">FAQ</h6>
             <p class="mb-1"><a href="#">Deposit uncredited?</a></p>
             <p class="mb-1"><a href="#">How to choose the public chain?</a></p>
           </div>
@@ -225,6 +285,8 @@
     const networkLoader = document.getElementById('networkLoader');
     const assetCoin = document.getElementById('assetCoin');
     const assetCoin2 = document.getElementById('assetCoin2');
+    const walletsContainer = document.getElementById('walletsContainer');
+    const walletLoader = document.getElementById('walletLoader');
 
     // Attention panel fields
     const minDepositEl = document.getElementById('minDeposit');
@@ -234,7 +296,8 @@
     const networks = {
       USDT: ["BSC (BEP20)", "TRON (TRC20)", "Ethereum (ERC20)", "Solana"],
       BTC: ["Bitcoin Mainnet", "Lightning Network"],
-      ETH: ["Ethereum Mainnet", "Polygon", "Arbitrum"]
+      ETH: ["Ethereum Mainnet", "Polygon", "Arbitrum"],
+      USDC: ["Ethereum Mainnet", "Polygon", "Arbitrum"]
     };
 
     const networkInfo = {
@@ -248,6 +311,90 @@
       "Polygon": { min: "1 MATIC", depositConf: "12 Confirmation(s)", withdrawalConf: "25 Confirmation(s)" },
       "Arbitrum": { min: "0.05 ETH", depositConf: "15 Confirmation(s)", withdrawalConf: "35 Confirmation(s)" }
     };
+
+    // Wallet addresses and QR code paths for each network
+    const walletData = {
+      "BSC (BEP20)": [
+        { name: "Main Wallet", address: "0x1234...BSC", qr: "https://via.placeholder.com/60?text=BSC1" },
+        { name: "Backup Wallet", address: "0x5678...BSC", qr: "https://via.placeholder.com/60?text=BSC2" }
+      ],
+      "TRON (TRC20)": [
+        { name: "Main Wallet", address: "TXYZ...TRON", qr: "https://via.placeholder.com/60?text=TRON" }
+      ],
+      "Ethereum (ERC20)": [
+        { name: "Main Wallet", address: "0xABCD...ETH", qr: "https://via.placeholder.com/60?text=ETH" }
+      ],
+      "Solana": [
+        { name: "Main Wallet", address: "So1aNaAdDr3ss", qr: "https://via.placeholder.com/60?text=SOL" }
+      ],
+      "Bitcoin Mainnet": [
+        { name: "Main Wallet", address: "1A2b3C4d5E", qr: "https://via.placeholder.com/60?text=BTC" }
+      ],
+      "Lightning Network": [
+        { name: "Main Wallet", address: "lnbc1...", qr: "https://via.placeholder.com/60?text=LN" }
+      ],
+      "Ethereum Mainnet": [
+        { name: "Main Wallet", address: "0xEFGH...ETH", qr: "https://via.placeholder.com/60?text=ETH-Main" }
+      ],
+      "Polygon": [
+        { name: "Main Wallet", address: "0xPolyGonAddr", qr: "https://via.placeholder.com/60?text=Polygon" }
+      ],
+      "Arbitrum": [
+        { name: "Main Wallet", address: "0xArbiTrUm", qr: "https://via.placeholder.com/60?text=Arbitrum" }
+      ]
+    };
+
+    function updateWallets(network) {
+      walletsContainer.innerHTML = '';
+      const wallets = walletData[network] || [];
+      if (wallets.length === 0) {
+        walletsContainer.innerHTML = '<p class="text-muted">No wallets available for this network.</p>';
+        return;
+      }
+
+      wallets.forEach(w => {
+        const walletDiv = document.createElement('div');
+        walletDiv.classList.add('wallet-item');
+
+        const qrImg = document.createElement('img');
+        qrImg.src = w.qr;
+        qrImg.alt = w.name + " QR Code";
+        qrImg.style.width = '60px';
+        qrImg.style.height = '60px';
+        qrImg.style.objectFit = 'contain';
+
+        const infoDiv = document.createElement('div');
+        infoDiv.classList.add('wallet-info');
+        infoDiv.innerHTML = `<strong>${w.name}</strong><br><span class="wallet-address">${w.address}</span>`;
+
+        const copyBtn = document.createElement('button');
+        copyBtn.classList.add('copy-btn');
+        copyBtn.title = 'Copy wallet address';
+        copyBtn.innerHTML = '<i class="ri-file-copy-line"></i>';
+
+        const tooltip = document.createElement('span');
+        tooltip.classList.add('copy-tooltip');
+        tooltip.textContent = 'Copied!';
+
+        copyBtn.appendChild(tooltip);
+
+        copyBtn.addEventListener('click', () => {
+          navigator.clipboard.writeText(w.address).then(() => {
+            tooltip.classList.add('show');
+            setTimeout(() => {
+              tooltip.classList.remove('show');
+            }, 1500);
+          }).catch(() => {
+            alert('Failed to copy address');
+          });
+        });
+
+        walletDiv.appendChild(qrImg);
+        walletDiv.appendChild(infoDiv);
+        walletDiv.appendChild(copyBtn);
+        walletsContainer.appendChild(walletDiv);
+      });
+    }
 
     // Show loader while fetching networks
     function loadNetworks(coin) {
@@ -273,12 +420,25 @@
                 depositConfEl.textContent = info.depositConf;
                 withdrawalConfEl.textContent = info.withdrawalConf;
               }
+
+              walletsContainer.innerHTML = '';
+              walletLoader.style.display = 'block';
+
+              setTimeout(() => {
+                walletLoader.style.display = 'none';
+                updateWallets(net);
+              }, 800);
             });
             col.appendChild(btn);
             networkContainer.appendChild(col);
           });
+          // Auto select first network after loading
+          const firstNetworkBtn = networkContainer.querySelector('.network-btn');
+          if (firstNetworkBtn) {
+            firstNetworkBtn.click();
+          }
         }
-      }, 800); // simulate loader delay
+      }, 800);
     }
 
     selectedCoin.addEventListener('click', () => {
@@ -296,14 +456,35 @@
       });
     });
 
-    searchCoin.addEventListener('input', () => {
-      const filter = searchCoin.value.toLowerCase();
-      coinItems.forEach(item => {
-        item.style.display = item.textContent.toLowerCase().includes(filter) ? '' : 'none';
+    // Handle History and Popular Coins badges
+    document.querySelectorAll('.coin-badge').forEach(badge => {
+      badge.addEventListener('click', () => {
+        const coin = badge.textContent.trim();
+        selectedCoin.querySelector('span').textContent = coin;
+        assetCoin.textContent = coin;
+        assetCoin2.textContent = coin;
+        coinDropdown.style.display = 'none';
+        loadNetworks(coin);
       });
     });
 
-    // On page load, show USDT as default
+    // Search coins
+    searchCoin.addEventListener('input', () => {
+      const filter = searchCoin.value.toLowerCase();
+      document.querySelectorAll('#coinList .coin-item').forEach(item => {
+        const text = item.textContent.toLowerCase();
+        item.style.display = text.includes(filter) ? 'flex' : 'none';
+      });
+    });
+
+    // Click outside dropdown closes it
+    document.addEventListener('click', e => {
+      if (!selectedCoin.contains(e.target) && !coinDropdown.contains(e.target)) {
+        coinDropdown.style.display = 'none';
+      }
+    });
+
+    // On page load, default to USDT
     document.addEventListener('DOMContentLoaded', () => {
       selectedCoin.querySelector('span').textContent = 'USDT';
       assetCoin.textContent = 'USDT';
