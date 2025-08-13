@@ -93,7 +93,7 @@
     <div class="account_overview">
         <div class="container">
             <div class="col-lg-12 mx-auto">
-                <div class="row">
+                <div class="row g-3">
                     <div class="col-lg-3">
                         <div class="card border-0">
                             <div class="card-body p-0">
@@ -103,8 +103,8 @@
                                         Overview</a>
                                     <a href="assets.html" class="list-group-item"><img src="img/assets.png" width="20"
                                             height="20" alt="Assets"> Assets</a>
-                                    <a href="deposit.html" class="list-group-item active"><img src="img/deposit.png"
-                                            width="20" height="20" alt="Deposit">
+                                    <a href="deposit.html" class="list-group-item"><img src="img/deposit.png" width="20"
+                                            height="20" alt="Deposit">
                                         Deposit</a>
                                     <a href="withdrawal.html" class="list-group-item"><img src="img/withdraw.png"
                                             width="20" height="20" alt="Withdrawal">
@@ -116,7 +116,7 @@
                                             src="img/withdraw-record.png" width="20" height="20" alt="withdraw records">
                                         Withdrawal
                                         Records</a>
-                                    <a href="transfer-history.html" class="list-group-item"><img
+                                    <a href="transfer-history.html" class="list-group-item active"><img
                                             src="img/transfer-history.png" width="20" height="20"
                                             alt="Transfer History"> Transfer
                                         History</a>
@@ -125,119 +125,35 @@
                         </div>
                     </div>
                     <div class="col-lg-9">
-                        <h4 class="fw-bold"><img src="img/deposit.png" width="50" height="50" alt=""> Deposit</h4>
+                        <h4 class="fw-bold"><img src="img/transfer-history.png" width="50" height="50" alt=""> Transfer
+                            History</h4>
                         <div class="card border-0">
                             <div class="card-body">
-                                <div class="row g-3">
+                                <div class="row">
                                     <div class="col-lg-7">
-                                        <small class="fw-bold">Select coin/token and transfer mode</small>
-
-                                        <!-- Left side: Steps -->
-
-                                        <!-- Step 1: Select Coin/Token -->
-                                        <div class="d-flex align-items-center mb-3 mt-3">
-                                            <div
-                                                class="step-number bg-gradient-blue text-white rounded-circle d-flex align-items-center justify-content-center fw-bold me-3">
-                                                1
-                                            </div>
-                                            <h6 class="mb-0 fw-bold text-dark">Select Coin/Token</h6>
-                                        </div>
-                                        <div class="custom-dropdown mb-4">
-                                            <div class="form-control d-flex align-items-center justify-content-between"
-                                                id="selectedCoin" style="cursor:pointer;">
-                                                <span>Select Coin/Token</span>
-                                                <span><i class="ri-arrow-down-s-line"></i></span>
-                                            </div>
-                                            <div class="dropdown-panel" id="coinDropdown">
-                                                <input type="text" class="form-control mb-3"
-                                                    placeholder="Search by coin/token" id="searchCoin">
-
-                                                <div>
-                                                    <small class="text-muted">History</small><br>
-                                                    <span class="coin-badge">USDT</span>
-                                                    <span class="coin-badge">BTC</span>
-                                                </div>
-
-                                                <div class="mt-3">
-                                                    <small class="text-muted">Popular Coins 🔥</small><br>
-                                                    <span class="coin-badge">USDT</span>
-                                                    <span class="coin-badge">ETH</span>
-                                                    <span class="coin-badge">USDC</span>
-                                                    <span class="coin-badge">BTC</span>
-                                                </div>
-
-                                                <div class="mt-3">
-                                                    <small class="text-muted">Crypto List</small>
-                                                    <div id="coinList">
-                                                        <div class="coin-item" data-coin="USDT"><img
-                                                                src="img/icon/tether.png" alt=""> USDT - Tether
-                                                        </div>
-                                                        <div class="coin-item" data-coin="BTC"><img
-                                                                src="img/icon/btc.png" alt=""> BTC - Bitcoin</div>
-                                                        <div class="coin-item" data-coin="ETH"><img
-                                                                src="img/icon/eth.png" alt=""> ETH - Ethereum</div>
-                                                        <div class="coin-item" data-coin="USDC"><img
-                                                                src="img/icon/usdc.png" alt=""> USDC - USD Coin
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Step 2 -->
-                                        <div class="mt-4" id="networkSection">
-                                            <div class="d-flex align-items-center mb-4">
-                                                <div
-                                                    class="step-number bg-gradient-blue text-white rounded-circle d-flex align-items-center justify-content-center fw-bold me-3">
-                                                    2
-                                                </div>
-                                                <h6 class="mb-0 fw-bold text-dark">Select Network</h6>
-                                            </div>
-                                            <div class="loader" id="networkLoader">
-                                                <span></span><span></span><span></span>
-                                            </div>
-                                            <div class="row g-3" id="networkContainer"></div>
-                                        </div>
-                                        <!-- Left side: Steps -->
+                                        <p class="muted"><small>Est. Total Assets (USDT) <i class="ri-eye-line mx-2"
+                                                    id="toggleVisibility"></i></span></small>
+                                        </p>
+                                        <h4 class="hidden-balance fw-bold" id="balance">0.000 ≈ 0.00 USD</h4>
                                     </div>
-
-                                    <!-- Right side -->
-                                    <div class="col-lg-5">
-                                        <h6 class="fw-bold">Total Assets</h6>
-                                        <p class="mb-1 text-muted small fw-bold">Available: 0 <span
-                                                id="assetCoin">USDT</span>
-                                        </p>
-                                        <p class="mb-3 text-muted small fw-bold">Frozen: 0 <span
-                                                id="assetCoin2">USDT</span></p>
-
-                                        <h6 class="fw-bold">Attention</h6>
-                                        <p class="mb-1 small">Minimum deposit: <span class="fw-bold"
-                                                id="minDeposit">0.086</span></p>
-                                        <p class="mb-1 small">Deposit arrival: <span class="fw-bold" id="depositConf">12
-                                                Confirmation(s)</span></p>
-                                        <p class="mb-3 small">Withdrawal unlock: <span class="fw-bold"
-                                                id="withdrawalConf">30 Confirmation(s)</span>
-                                        </p>
-
-                                        <p class="my-auto text-muted small">Arrival time: Normal transfers are sent via
-                                            crypto network, and the arrival time depends on the number of confirmations
-                                            required by the recipient.</p>
-                                        <!-- New Wallets Section -->
-                                        <h6 class="fw-bold mt-4 ">Wallets</h6>
-                                        <div id="walletsContainer" class="d-flex flex-column gap-3">
-                                            <!-- Wallets will be dynamically inserted here -->
-                                        </div>
-                                        <div class="loader" id="walletLoader" style="display:none;">
-                                            <span></span><span></span><span></span>
+                                    <div class="col-lg-5 m-auto">
+                                        <div class="d-grid gap-2">
+                                            <a href="" class="btn btn_red"><i class="ri-corner-down-right-fill"></i>
+                                                Deposit
+                                                Crypto</a>
+                                            <a href="" class="btn btn_blue_outline"><i
+                                                    class="ri-user-community-line"></i>
+                                                Buy
+                                                Crypto</a>
                                         </div>
                                     </div>
-                                    <!-- Right side -->
                                 </div>
                             </div>
                         </div>
 
+                        <!-- Deposit records -->
                         <!-- Deposit history -->
-                        <div class="row g-3 mt-3 mb-5">
+                        <div class="row mt-3 mb-5">
                             <div class="col-lg-12">
                                 <div class="card border-0">
                                     <div class="card-body">
@@ -364,8 +280,9 @@
                                     </div>
                                 </div>
                             </div>
+                            <!-- Deposit History -->
                         </div>
-                        <!-- Deposit History -->
+                        <!-- Deposit records -->
                     </div>
                 </div>
             </div>
@@ -377,28 +294,11 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     <!-- Bootstrap JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Your custom JS -->
-    <script src="js/network.js"></script>
+    <script src="js/scripts.js"></script>
+    <script src="js/app.js"></script>
 </body>
 
 </html>
