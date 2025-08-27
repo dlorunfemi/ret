@@ -9,21 +9,10 @@
                         <h5 class="mb-0">Admin Dashboard</h5>
                     </div>
                     <div class="card-body">
-                        <p>Welcome, {{ auth()->user()->name }}.</p>
-                        <p class="mb-3"><small>You are logged in as <strong>admin</strong>.</small></p>
 
-                        <div class="mb-4 d-flex gap-2 flex-wrap">
-                            <a class="btn btn-sm btn-primary" href="{{ route('admin.assets.index') }}">Manage Assets</a>
-                            <a class="btn btn-sm btn-primary" href="{{ route('admin.transactions.index') }}">Manage
-                                Transactions</a>
-                            <a class="btn btn-sm btn-primary" href="{{ route('admin.users.index') }}">Manage Users</a>
-                            <a class="btn btn-sm btn-primary" href="{{ route('admin.balances.index') }}">Manage Balances</a>
-                            <a class="btn btn-sm btn-secondary" href="{{ route('admin.profile.password.edit') }}">Change
-                                Password</a>
-                        </div>
 
                         <div class="row g-3">
-                            <div class="col-lg-6">
+                            {{-- <div class="col-lg-6">
                                 <h6 class="fw-bold">Users</h6>
                                 <div class="table-responsive">
                                     <table class="table align-middle">
@@ -69,7 +58,7 @@
                                 @if (isset($users))
                                     {{ $users->links() }}
                                 @endif
-                            </div>
+                            </div> --}}
                             <div class="col-lg-6">
                                 <h6 class="fw-bold">Pending Withdrawals</h6>
                                 <div class="table-responsive">

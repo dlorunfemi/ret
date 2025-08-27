@@ -42,8 +42,8 @@
                     @guest
                         <a href="{{ route('login') }}" class="btn btn_blue_outline px-5" type="submit">Login</a>
                         <a href="{{ route('signup') }}" class="btn btn_red ms-3 px-5" type="submit">Signup</a>
-                        <a href="{{ route('password.request') }}" class="btn btn_blue_outline ms-3 px-5"
-                            type="submit">Forgot</a>
+                        {{-- <a href="{{ route('password.request') }}" class="btn btn_blue_outline ms-3 px-5"
+                            type="submit">Forgot</a> --}}
                     @endguest
                     @auth
                         <form method="POST" action="{{ route('logout') }}">
