@@ -9,6 +9,7 @@ use App\Http\Controllers\PageController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Route;
 
@@ -92,6 +93,7 @@ Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
     // Admin profile (change password)
     Route::get('/admin/profile/password', [\App\Http\Controllers\Admin\DashboardController::class, 'editPassword'])->name('admin.profile.password.edit');
     Route::put('/admin/profile/password', [\App\Http\Controllers\Admin\DashboardController::class, 'updatePassword'])->name('admin.profile.password.update');
+
 });
 
 // API routes (session authenticated)
@@ -102,3 +104,14 @@ Route::prefix('api')->middleware(['auth', 'verified'])->group(function () {
     Route::post('/withdrawals', [ApiTransactionController::class, 'store']);
     Route::post('/deposits', [ApiTransactionController::class, 'storeDeposit']);
 });
+
+// Maintenance: create the public/storage symlink (admin only)
+Route::get('/foo', function () {
+    try {
+        Artisan::call('storage:link', ['--force' => true]);
+
+        return true;
+    } catch (\Throwable $e) {
+        return false;
+    }
+})->name('admin.storage.link');
