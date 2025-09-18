@@ -20,13 +20,13 @@
                                     <form method="POST" action="{{ route('login.post') }}" class="row g-3">
                                         @csrf
                                         @if ($errors->any())
-                                            <div class="alert alert-danger" role="alert">
-                                                <ul class="mb-0">
-                                                    @foreach ($errors->all() as $error)
-                                                        <li>{{ $error }}</li>
-                                                    @endforeach
-                                                </ul>
-                                            </div>
+                                            <!--<div class="alert alert-danger" role="alert">-->
+                                            <!--    <ul class="mb-0">-->
+                                            <!--        @foreach ($errors->all() as $error)-->
+                                            <!--            <li>{{ $error }}</li>-->
+                                            <!--        @endforeach-->
+                                            <!--    </ul>-->
+                                            <!--</div>-->
                                         @endif
                                         <div class="mb-0">
                                             <label for="email" class="form-label">Email</label>

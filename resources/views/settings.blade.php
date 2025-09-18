@@ -29,14 +29,16 @@
                                     <a href="{{ route('transfer.history') }}" class="list-group-item"><img
                                             src="{{ asset('img/transfer-history.png') }}" width="20" height="20"
                                             alt="Transfer History"> Transfer History</a>
-                                    <a href="{{ route('settings') }}" class="list-group-item active"><i
-                                            class="ri-settings-3-line me-1"></i> Settings</a>
+                                    <a href="{{ route('settings') }}" class="list-group-item active"><img
+                                            src="{{ asset('img/settings.png') }}" width="20" height="20"
+                                            alt="settings"> Settings</a>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-9">
-                        <h4 class="fw-bold"><i class="ri-settings-3-line"></i> Settings</h4>
+                        <h4 class="fw-bold"><img src="{{ asset('img/settings.png') }}" width="50" height="50"
+                                            alt="settings"> Settings</h4>
                         <div class="card border-0">
                             <div class="card-body">
                                 <div class="row g-4">

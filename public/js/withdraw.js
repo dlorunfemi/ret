@@ -6,6 +6,8 @@ const networkContainer = document.getElementById('networkContainer');
 const networkLoader = document.getElementById('networkLoader');
 const assetCoin = document.getElementById('assetCoin');
 const assetCoin2 = document.getElementById('assetCoin2');
+const assetAvailableEl = document.getElementById('assetAvailable');
+const assetFrozenEl = document.getElementById('assetFrozen');
 const walletsContainer = document.getElementById('walletsContainer');
 const walletLoader = document.getElementById('walletLoader');
 
@@ -15,6 +17,7 @@ const depositConfEl = document.getElementById('depositConf');
 const withdrawalConfEl = document.getElementById('withdrawalConf');
 
 let assetsCache = [];
+let balancesCache = [];
 async function fetchAssets() {
     if (assetsCache.length) return assetsCache;
     const res = await fetch('/api/assets', { headers: { 'Accept': 'application/json' } });
@@ -22,6 +25,59 @@ async function fetchAssets() {
     const json = await res.json();
     assetsCache = json.data || [];
     return assetsCache;
+}
+
+async function fetchBalances() {
+    if (balancesCache.length) return balancesCache;
+    const res = await fetch('/api/balances', { headers: { 'Accept': 'application/json' } });
+    if (!res.ok) throw new Error('Failed to load balances');
+    const json = await res.json();
+    balancesCache = json.data || [];
+    return balancesCache;
+}
+
+function formatNumber(n, decimals = 6) {
+    const num = parseFloat(n || 0);
+    return Number(num).toLocaleString(undefined, {
+        minimumFractionDigits: decimals,
+        maximumFractionDigits: decimals,
+    });
+}
+
+function updatePanelForCoin(symbol) {
+    if (!assetAvailableEl || !assetFrozenEl) return;
+    const b = (balancesCache || []).find(x => x.asset === symbol);
+    const available = b ? b.available : 0;
+    const frozen = b ? b.frozen : 0;
+    assetAvailableEl.textContent = formatNumber(available, 6);
+    assetFrozenEl.textContent = formatNumber(frozen, 6);
+}
+
+function updateBalancesTable() {
+    const priceMap = {};
+    (assetsCache || []).forEach(a => { priceMap[a.symbol] = a.price_usd; });
+    (balancesCache || []).forEach(b => {
+        const amtEl = document.querySelector(`.amt[data-asset="${b.asset}"]`);
+        const frzEl = document.querySelector(`.frozen[data-asset="${b.asset}"]`);
+        const valEl = document.querySelector(`.val[data-asset="${b.asset}"]`);
+        const available = parseFloat(b.available) || 0;
+        const frozen = parseFloat(b.frozen) || 0;
+        const price = priceMap[b.asset] || 0;
+        const usd = available * price;
+        if (amtEl) amtEl.textContent = formatNumber(available, 6);
+        if (frzEl) frzEl.textContent = formatNumber(frozen, 6);
+        if (valEl) valEl.textContent = `$${Number(usd).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    });
+}
+
+async function hydrateBalancesUI(symbol) {
+    try {
+        await Promise.all([fetchAssets(), fetchBalances()]);
+        updateBalancesTable();
+        updatePanelForCoin(symbol);
+    } catch (e) {
+        // ignore errors silently on this page
+    }
 }
 
 // Replace wallets section with input + button
@@ -178,6 +234,7 @@ coinItems.forEach(item => {
         assetCoin2.textContent = coin;
         coinDropdown.style.display = 'none';
         loadNetworks(coin);
+        hydrateBalancesUI(coin);
     });
 });
 
@@ -190,6 +247,7 @@ document.querySelectorAll('.coin-badge').forEach(badge => {
         assetCoin2.textContent = coin;
         coinDropdown.style.display = 'none';
         loadNetworks(coin);
+        hydrateBalancesUI(coin);
     });
 });
 
@@ -215,6 +273,7 @@ document.addEventListener('DOMContentLoaded', () => {
     assetCoin.textContent = 'USDT';
     assetCoin2.textContent = 'USDT';
     loadNetworks('USDT');
+    hydrateBalancesUI('USDT');
     // Populate coin list from API
     fetchAssets().then(list => {
         const coinList = document.getElementById('coinList');
@@ -238,6 +297,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 assetCoin2.textContent = a.symbol;
                 coinDropdown.style.display = 'none';
                 loadNetworks(a.symbol);
+                hydrateBalancesUI(a.symbol);
             });
             coinList.appendChild(item);
         });

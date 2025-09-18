@@ -1,7 +1,7 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg">
         <div class="container">
-            <a class="navbar-brand" href="/">
+            <a class="navbar-brand" href="https://retrixnet.com">
                 <img src="{{ asset('img/logo.png') }}" alt="Logo">
             </a>
             <button class="navbar-toggler border border-0" type="button" data-bs-toggle="collapse"
@@ -17,9 +17,9 @@
                             Insight<i class="ri-arrow-down-s-line"></i>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">About Us</a></li>
-                            <li><a class="dropdown-item" href="#">Terms & conditions</a></li>
-                            <li><a class="dropdown-item" href="#">Privacy Policy</a></li>
+                            <li><a class="dropdown-item" href="https://retrixnet.com/about-us/">About Us</a></li>
+                            <li><a class="dropdown-item" href="https://retrixnet.com/terms-conditions/">Terms & conditions</a></li>
+                            <li><a class="dropdown-item" href="https://retrixnet.com/privacy-policy/">Privacy Policy</a></li>
                         </ul>
                     </li>
                     @auth
@@ -31,10 +31,10 @@
                         </li>
                     @endauth
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Roadmap</a>
+                        <a class="nav-link" href="https://retrixnet.com/roadmap/">Roadmap</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link">Contact Us</a>
+                        <a class="nav-link" href="https://retrixnet.com/contact-us/">Contact Us</a>
                     </li>
 
                 </ul>

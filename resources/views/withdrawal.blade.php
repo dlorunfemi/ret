@@ -29,8 +29,9 @@
                                     <a href="{{ route('transfer.history') }}" class="list-group-item"><img
                                             src="{{ asset('img/transfer-history.png') }}" width="20" height="20"
                                             alt="Transfer History"> Transfer History</a>
-                                    <a href="{{ route('settings') }}" class="list-group-item"><i
-                                            class="ri-settings-3-line me-1"></i> Settings</a>
+                                    <a href="{{ route('settings') }}" class="list-group-item"><img
+                                            src="{{ asset('img/settings.png') }}" width="20" height="20"
+                                            alt="settings"> Settings</a>
                                 </div>
                             </div>
                         </div>
@@ -103,10 +104,10 @@
                                     </div>
                                     <div class="col-lg-5">
                                         <h6 class="fw-bold">Total Assets</h6>
-                                        <p class="mb-1 text-muted small fw-bold">Available: 0 <span
-                                                id="assetCoin">USDT</span></p>
-                                        <p class="mb-3 text-muted small fw-bold">Frozen: 0 <span
-                                                id="assetCoin2">USDT</span></p>
+                                        <p class="mb-1 text-muted small fw-bold">Available: <span
+                                                id="assetAvailable">0</span> <span id="assetCoin">USDT</span></p>
+                                        <p class="mb-3 text-muted small fw-bold">Frozen: <span id="assetFrozen">0</span>
+                                            <span id="assetCoin2">USDT</span></p>
                                         <h6 class="fw-bold">Attention</h6>
                                         <p class="mb-1 small">Minimum deposit: <span class="fw-bold"
                                                 id="minDeposit">0.086</span></p>

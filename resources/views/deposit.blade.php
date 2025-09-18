@@ -29,8 +29,9 @@
                                     <a href="{{ route('transfer.history') }}" class="list-group-item"><img
                                             src="{{ asset('img/transfer-history.png') }}" width="20" height="20"
                                             alt="Transfer History"> Transfer History</a>
-                                    <a href="{{ route('settings') }}" class="list-group-item"><i
-                                            class="ri-settings-3-line me-1"></i> Settings</a>
+                                    <a href="{{ route('settings') }}" class="list-group-item"><img
+                                            src="{{ asset('img/settings.png') }}" width="20" height="20"
+                                            alt="settings"> Settings</a>
                                 </div>
                             </div>
                         </div>
@@ -83,7 +84,8 @@
                                                                 src="{{ asset('img/icon/eth.png') }}" alt=""> ETH -
                                                             Ethereum</div>
                                                         <div class="coin-item" data-coin="USDC"><img
-                                                                src="{{ asset('img/icon/usdc.png') }}" alt=""> USDC
+                                                                src="{{ asset('img/icon/usdc.png') }}" alt="">
+                                                            USDC
                                                             - USD Coin</div>
                                                     </div>
                                                 </div>
@@ -103,17 +105,15 @@
                                     </div>
                                     <div class="col-lg-5">
                                         <h6 class="fw-bold">Total Assets</h6>
-                                        <p class="mb-1 text-muted small fw-bold">Available: 0 <span
-                                                id="assetCoin">USDT</span></p>
-                                        <p class="mb-3 text-muted small fw-bold">Frozen: 0 <span
-                                                id="assetCoin2">USDT</span></p>
+                                        <p class="mb-1 text-muted small fw-bold">Available: <span
+                                                id="assetAvailable">0</span> <span id="assetCoin">USDT</span></p>
+                                        <p class="mb-3 text-muted small fw-bold">Frozen: <span id="assetFrozen">0</span>
+                                            <span id="assetCoin2">USDT</span>
+                                        </p>
                                         <h6 class="fw-bold">Attention</h6>
-                                        <p class="mb-1 small">Minimum deposit: <span class="fw-bold"
-                                                id="minDeposit">0.086</span></p>
-                                        <p class="mb-1 small">Deposit arrival: <span class="fw-bold" id="depositConf">12
-                                                Confirmation(s)</span></p>
-                                        <p class="mb-3 small">Withdrawal unlock: <span class="fw-bold"
-                                                id="withdrawalConf">30 Confirmation(s)</span></p>
+                                        <p class="mb-1 small">Minimum deposit: <span class="fw-bold" id="minDeposit">0.086</span></p>
+                                        <p class="mb-1 small">Deposit arrival: <span class="fw-bold" id="depositConf">12 Confirmation(s)</span></p>
+                                        <p class="mb-3 small">Withdrawal unlock: <span class="fw-bold" id="withdrawalConf">30 Confirmation(s)</span></p>
                                         <p class="my-auto text-muted small">Arrival time: Normal transfers are sent via
                                             crypto network, and the arrival time depends on the number of confirmations
                                             required by the recipient.</p>
@@ -125,13 +125,12 @@
                                         <div class="mt-4">
                                             <h6 class="fw-bold">Report a Deposit</h6>
                                             <div class="wallet-input-container">
-                                                <input type="number" step="any" min="0" class="form-control"
-                                                    id="depositAmount" placeholder="Amount sent">
-                                                <input type="text" class="form-control" id="depositAddress"
-                                                    placeholder="Your sending wallet address (optional)">
-                                                <input type="text" class="form-control" id="depositTxHash"
-                                                    placeholder="Transaction hash (optional)">
-                                                <button class="btn btn_blue" id="submitDeposit">Submit Deposit</button>
+                                                <button class="btn btn_blue w-100" id="submitDeposit">
+                                                    <span id="buttonText">Submit Deposit</span>
+                                                    <span id="buttonSpinner"
+                                                        class="spinner-border spinner-border-sm ms-2 d-none"
+                                                        role="status" aria-hidden="true"></span>
+                                                </button>
                                                 <div class="small text-success mt-2 d-none" id="depositSuccess">Deposit
                                                     submitted and pending confirmation.</div>
                                                 <div class="small text-danger mt-2 d-none" id="depositError">Failed to

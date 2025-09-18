@@ -27,7 +27,7 @@
         content="A concise, compelling description of your page's content (150-160 characters).">
     <meta property="twitter:image" content="https://yourwebsite.com/images/social-preview-image.jpg">
 
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="{{ asset('img/favicon.svg') }}">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">

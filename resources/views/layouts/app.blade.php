@@ -1,6 +1,6 @@
 @include('partials.head', ['title' => $title ?? null])
 
-@include('partials.alerts')
+<!--@include('partials.alerts')-->
 
 @yield('content')
 

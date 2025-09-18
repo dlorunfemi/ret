@@ -57,4 +57,10 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(UserBalance::class);
     }
+    
+        public function sendEmailVerificationNotification(): void
+    {
+        $this->notify(new \App\Notifications\VerifyEmailCustom);
+    }
+    
 }

@@ -29,8 +29,9 @@
                                     <a href="{{ route('transfer.history') }}" class="list-group-item active"><img
                                             src="{{ asset('img/transfer-history.png') }}" width="20" height="20"
                                             alt="Transfer History"> Transfer History</a>
-                                    <a href="{{ route('settings') }}" class="list-group-item"><i
-                                            class="ri-settings-3-line me-1"></i> Settings</a>
+                                    <a href="{{ route('settings') }}" class="list-group-item"><img
+                                            src="{{ asset('img/settings.png') }}" width="20" height="20"
+                                            alt="settings"> Settings</a>
                                 </div>
                             </div>
                         </div>

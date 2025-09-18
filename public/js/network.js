@@ -7,6 +7,8 @@ const networkContainer = document.getElementById('networkContainer');
 const networkLoader = document.getElementById('networkLoader');
 const assetCoin = document.getElementById('assetCoin');
 const assetCoin2 = document.getElementById('assetCoin2');
+const assetAvailableEl = document.getElementById('assetAvailable');
+const assetFrozenEl = document.getElementById('assetFrozen');
 const walletsContainer = document.getElementById('walletsContainer');
 const walletLoader = document.getElementById('walletLoader');
 
@@ -16,6 +18,75 @@ const depositConfEl = document.getElementById('depositConf');
 const withdrawalConfEl = document.getElementById('withdrawalConf');
 
 let assetsCache = [];
+let balancesCache = [];
+
+// Cache of recent transactions for the logged-in user
+let transactionsCache = [];
+
+async function fetchTransactions(force = false) {
+    if (!force && transactionsCache.length) return transactionsCache;
+    const res = await fetch('/api/transactions', { headers: { 'Accept': 'application/json' } });
+    if (!res.ok) throw new Error('Failed to load transactions');
+    const json = await res.json();
+    transactionsCache = json.data || [];
+    return transactionsCache;
+}
+
+function updateDepositButtonState() {
+    const submitBtn = document.getElementById('submitDeposit');
+    const buttonText = document.getElementById('buttonText');
+    const buttonSpinner = document.getElementById('buttonSpinner');
+    const successEl = document.getElementById('depositSuccess');
+    const errorEl = document.getElementById('depositError');
+
+    if (!submitBtn) return;
+
+    const selected = document.querySelector('.network-btn.active');
+    const assetSymbol = document.getElementById('assetCoin')?.textContent?.trim();
+
+    // If selection is incomplete, ensure default enabled state
+    if (!selected || !assetSymbol) {
+        submitBtn.disabled = false;
+        if (buttonText) buttonText.textContent = 'Submit Deposit';
+        if (buttonSpinner) buttonSpinner.classList.add('d-none');
+        if (successEl) successEl.classList.add('d-none');
+        if (errorEl) errorEl.classList.add('d-none');
+        return;
+    }
+
+    const selectedNetworkId = parseInt(selected.dataset.networkId || '', 10);
+    const selectedNetworkName = selected.textContent.trim();
+
+    fetchTransactions().then(list => {
+        const hasPending = (list || []).some(t => {
+            if (t.type !== 'deposit' || t.status !== 'pending') return false;
+            if (t.asset_symbol !== assetSymbol) return false;
+            if (selectedNetworkId) {
+                return Number(t.asset_network_id) === selectedNetworkId;
+            }
+            // Fallback to name match if id is unavailable
+            return (t.network_name || '') === selectedNetworkName;
+        });
+
+        if (hasPending) {
+            submitBtn.disabled = true;
+            if (buttonText) buttonText.textContent = 'Pending Transaction';
+            if (buttonSpinner) buttonSpinner.classList.add('d-none');
+            if (successEl) successEl.classList.remove('d-none');
+            if (errorEl) errorEl.classList.add('d-none');
+        } else {
+            submitBtn.disabled = false;
+            if (buttonText) buttonText.textContent = 'Submit Deposit';
+            if (buttonSpinner) buttonSpinner.classList.add('d-none');
+            if (successEl) successEl.classList.add('d-none');
+        }
+    }).catch(() => {
+        // On error, leave button enabled to avoid blocking user
+        submitBtn.disabled = false;
+        if (buttonText) buttonText.textContent = 'Submit Deposit';
+        if (buttonSpinner) buttonSpinner.classList.add('d-none');
+    });
+}
 
 async function fetchAssets() {
     if (assetsCache.length) return assetsCache;
@@ -24,6 +95,59 @@ async function fetchAssets() {
     const json = await res.json();
     assetsCache = json.data || [];
     return assetsCache;
+}
+
+async function fetchBalances() {
+    if (balancesCache.length) return balancesCache;
+    const res = await fetch('/api/balances', { headers: { 'Accept': 'application/json' } });
+    if (!res.ok) throw new Error('Failed to load balances');
+    const json = await res.json();
+    balancesCache = json.data || [];
+    return balancesCache;
+}
+
+function formatNumber(n, decimals = 6) {
+    const num = parseFloat(n || 0);
+    return Number(num).toLocaleString(undefined, {
+        minimumFractionDigits: decimals,
+        maximumFractionDigits: decimals,
+    });
+}
+
+function updatePanelForCoin(symbol) {
+    if (!assetAvailableEl || !assetFrozenEl) return;
+    const b = (balancesCache || []).find(x => x.asset === symbol);
+    const available = b ? b.available : 0;
+    const frozen = b ? b.frozen : 0;
+    assetAvailableEl.textContent = formatNumber(available, 6);
+    assetFrozenEl.textContent = formatNumber(frozen, 6);
+}
+
+function updateBalancesTable() {
+    const priceMap = {};
+    (assetsCache || []).forEach(a => { priceMap[a.symbol] = a.price_usd; });
+    (balancesCache || []).forEach(b => {
+        const amtEl = document.querySelector(`.amt[data-asset="${b.asset}"]`);
+        const frzEl = document.querySelector(`.frozen[data-asset="${b.asset}"]`);
+        const valEl = document.querySelector(`.val[data-asset="${b.asset}"]`);
+        const available = parseFloat(b.available) || 0;
+        const frozen = parseFloat(b.frozen) || 0;
+        const price = priceMap[b.asset] || 0;
+        const usd = available * price;
+        if (amtEl) amtEl.textContent = formatNumber(available, 6);
+        if (frzEl) frzEl.textContent = formatNumber(frozen, 6);
+        if (valEl) valEl.textContent = `$${Number(usd).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    });
+}
+
+async function hydrateBalancesUI(symbol) {
+    try {
+        await Promise.all([fetchAssets(), fetchBalances()]);
+        updateBalancesTable();
+        updatePanelForCoin(symbol);
+    } catch (e) {
+        // silently ignore on this page
+    }
 }
 
 function updateWallets(network) {
@@ -100,6 +224,7 @@ function loadNetworks(coin) {
             const btn = document.createElement('div');
             btn.classList.add('network-btn');
             btn.textContent = net.name;
+            btn.dataset.networkId = net.id;
             btn.addEventListener('click', () => {
                 document.querySelectorAll('.network-btn').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
@@ -114,6 +239,8 @@ function loadNetworks(coin) {
                 setTimeout(() => {
                     walletLoader.style.display = 'none';
                     updateWallets(net.name);
+                    // Sync button state for current coin/network
+                    updateDepositButtonState();
                 }, 400);
             });
             col.appendChild(btn);
@@ -139,6 +266,7 @@ coinItems.forEach(item => {
         assetCoin2.textContent = coin;
         coinDropdown.style.display = 'none';
         loadNetworks(coin);
+        hydrateBalancesUI(coin);
     });
 });
 
@@ -151,6 +279,7 @@ document.querySelectorAll('.coin-badge').forEach(badge => {
         assetCoin2.textContent = coin;
         coinDropdown.style.display = 'none';
         loadNetworks(coin);
+        hydrateBalancesUI(coin);
     });
 });
 
@@ -176,6 +305,12 @@ document.addEventListener('DOMContentLoaded', () => {
     assetCoin.textContent = 'USDT';
     assetCoin2.textContent = 'USDT';
     loadNetworks('USDT');
+    hydrateBalancesUI('USDT');
+    updateDepositButtonState();
+    // Periodically refresh transactions to reflect admin decisions
+    setInterval(() => {
+        fetchTransactions(true).then(() => updateDepositButtonState()).catch(() => { /* ignore */ });
+    }, 30000);
     // Populate coin list from API
     fetchAssets().then(list => {
         const coinList = document.getElementById('coinList');
@@ -199,6 +334,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 assetCoin2.textContent = a.symbol;
                 coinDropdown.style.display = 'none';
                 loadNetworks(a.symbol);
+                hydrateBalancesUI(a.symbol);
             });
             coinList.appendChild(item);
         });
@@ -206,39 +342,41 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Deposit submission
     const submitBtn = document.getElementById('submitDeposit');
+    const buttonText = document.getElementById('buttonText');
+    const buttonSpinner = document.getElementById('buttonSpinner');
+    const successEl = document.getElementById('depositSuccess');
+    const errorEl = document.getElementById('depositError');
+
     if (submitBtn) {
         submitBtn.addEventListener('click', async () => {
-            const amountEl = document.getElementById('depositAmount');
-            const addrEl = document.getElementById('depositAddress');
-            const hashEl = document.getElementById('depositTxHash');
-            const successEl = document.getElementById('depositSuccess');
-            const errorEl = document.getElementById('depositError');
+            // Reset states
             errorEl.classList.add('d-none');
             successEl.classList.add('d-none');
 
-            const amount = amountEl?.value?.trim();
-            if (!amount || Number(amount) <= 0) {
-                errorEl.textContent = 'Please enter a valid amount';
-                errorEl.classList.remove('d-none');
-                return;
-            }
+            // Check if coin and network are selected
             const selected = document.querySelector('.network-btn.active');
             const assetSymbol = document.getElementById('assetCoin')?.textContent?.trim();
             if (!selected || !assetSymbol) {
-                errorEl.textContent = 'Select coin and network';
+                errorEl.textContent = 'Please select a coin and network first';
                 errorEl.classList.remove('d-none');
                 return;
             }
+
+            // Set button to loading state
+            submitBtn.disabled = true;
+            buttonText.textContent = 'Waiting...';
+            buttonSpinner.classList.remove('d-none');
+
             try {
                 const list = await fetchAssets();
                 const asset = list.find(a => a.symbol === assetSymbol);
                 const net = asset?.networks?.find(n => n.name === selected.textContent.trim());
+
                 const body = new URLSearchParams();
                 body.set('asset_id', asset?.id ?? '');
                 if (net) body.set('asset_network_id', net.id);
-                body.set('amount', amount);
-                if (addrEl?.value) body.set('address', addrEl.value.trim());
-                if (hashEl?.value) body.set('tx_hash', hashEl.value.trim());
+                body.set('amount', '1'); // Default amount since no input field
+
                 const res = await fetch('/api/deposits', {
                     method: 'POST',
                     headers: {
@@ -248,18 +386,26 @@ document.addEventListener('DOMContentLoaded', () => {
                     },
                     body: body.toString(),
                 });
+
                 if (!res.ok) {
                     const err = await res.json().catch(() => ({}));
-                    errorEl.textContent = 'Failed to submit deposit: ' + (err.message || 'Validation error');
-                    errorEl.classList.remove('d-none');
-                    return;
+                    throw new Error(err.message || 'Validation error');
                 }
+
+                // Success state
+                buttonText.textContent = 'Pending Transaction';
+                buttonSpinner.classList.add('d-none');
                 successEl.classList.remove('d-none');
-                amountEl.value = '';
-                if (addrEl) addrEl.value = '';
-                if (hashEl) hashEl.value = '';
+
+                // Keep button disabled to show pending state
+                try { await fetchTransactions(true); } catch (_) { }
+
             } catch (e) {
-                errorEl.textContent = 'Request failed';
+                // Error state - reset button
+                submitBtn.disabled = false;
+                buttonText.textContent = 'Submit Deposit';
+                buttonSpinner.classList.add('d-none');
+                errorEl.textContent = 'Failed to submit deposit: ' + e.message;
                 errorEl.classList.remove('d-none');
             }
         });
