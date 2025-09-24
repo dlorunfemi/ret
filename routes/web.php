@@ -89,11 +89,12 @@ Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
     // Balances moved under Users page as a modal-driven tool
     Route::get('/admin/users/{user}/balances', [\App\Http\Controllers\Admin\UserManagementController::class, 'balances'])->name('admin.users.balances');
     Route::put('/admin/users/{user}/balances', [\App\Http\Controllers\Admin\UserManagementController::class, 'updateBalances'])->name('admin.users.balances.update');
+    Route::get('/admin/users/{user}/network-settings', [\App\Http\Controllers\Admin\UserManagementController::class, 'networkSettings'])->name('admin.users.network_settings');
+    Route::put('/admin/users/{user}/network-settings', [\App\Http\Controllers\Admin\UserManagementController::class, 'updateNetworkSettings'])->name('admin.users.network_settings.update');
 
     // Admin profile (change password)
     Route::get('/admin/profile/password', [\App\Http\Controllers\Admin\DashboardController::class, 'editPassword'])->name('admin.profile.password.edit');
     Route::put('/admin/profile/password', [\App\Http\Controllers\Admin\DashboardController::class, 'updatePassword'])->name('admin.profile.password.update');
-
 });
 
 // API routes (session authenticated)

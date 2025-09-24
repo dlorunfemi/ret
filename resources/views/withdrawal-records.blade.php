@@ -95,6 +95,7 @@
 @endsection
 
 @push('scripts')
+    <script src="{{ asset('js/app.js') }}"></script>
     <script>
         async function hydrateWithdrawals() {
             const res = await fetch('/api/transactions', {

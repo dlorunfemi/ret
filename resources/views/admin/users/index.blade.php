@@ -74,6 +74,8 @@
                                     <td class="text-end">
                                         <button class="btn btn-sm btn-outline-primary me-2"
                                             data-balance-user-id="{{ $user->id }}">Balances</button>
+                                        <button class="btn btn-sm btn-outline-secondary me-2"
+                                            data-network-user-id="{{ $user->id }}">Network Settings</button>
                                         <a href="{{ route('admin.users.edit', $user) }}"
                                             class="btn btn-sm btn-secondary">Edit</a>
                                         <form method="POST" action="{{ route('admin.users.destroy', $user) }}"
@@ -131,10 +133,47 @@
         </div>
     </div>
 
+    <!-- Network Settings Modal -->
+    <div class="modal fade" id="networkSettingsModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">User Network Settings</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="networkSettingsForm">
+                        <input type="hidden" id="networkUserId" value="">
+                        <div class="table-responsive">
+                            <table class="table align-middle" id="networkSettingsTable">
+                                <thead>
+                                    <tr>
+                                        <th>Asset</th>
+                                        <th>Network</th>
+                                        <th>Min Deposit</th>
+                                        <th>Deposit Confs</th>
+                                        <th>Withdraw Confs</th>
+                                        <th>Defaults</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="saveNetworkSettingsBtn">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         (function() {
             const csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
             let currentUserId = null;
+            let currentNetworkUserId = null;
 
             function openModal(userId) {
                 currentUserId = userId;
@@ -209,8 +248,89 @@
                     e.preventDefault();
                     openModal(btn.getAttribute('data-balance-user-id'));
                 }
+                const nbtn = e.target.closest('[data-network-user-id]');
+                if (nbtn) {
+                    e.preventDefault();
+                    openNetworkModal(nbtn.getAttribute('data-network-user-id'));
+                }
             });
             document.getElementById('saveBalancesBtn').addEventListener('click', save);
+
+            async function openNetworkModal(userId) {
+                currentNetworkUserId = userId;
+                document.getElementById('networkUserId').value = userId;
+                const modalEl = document.getElementById('networkSettingsModal');
+                const modal = new bootstrap.Modal(modalEl);
+                await loadNetworkSettings(userId);
+                modal.show();
+            }
+
+            async function loadNetworkSettings(userId) {
+                const tbody = document.querySelector('#networkSettingsTable tbody');
+                tbody.innerHTML = '<tr><td colspan="6">Loading...</td></tr>';
+                const res = await fetch(`/admin/users/${userId}/network-settings`, {
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+                if (!res.ok) {
+                    tbody.innerHTML = '<tr><td colspan="6" class="text-danger">Failed to load settings</td></tr>';
+                    return;
+                }
+                const json = await res.json();
+                const rows = (json.data || []).map(item => {
+                    const min = item.defaults.min_deposit ?? '';
+                    const dep = item.defaults.deposit_confirmations ?? '';
+                    const wdr = item.defaults.withdraw_confirmations ?? '';
+                    return `
+                        <tr data-network-id="${item.asset_network_id}">
+                            <td><strong>${item.asset_symbol}</strong> <small class="text-muted">${item.asset_name}</small></td>
+                            <td>${item.network_name}</td>
+                            <td style="max-width:180px"><input type="number" class="form-control form-control-sm" step="any" min="0" value="${item.min_deposit ?? ''}" placeholder="${min}"></td>
+                            <td style="max-width:160px"><input type="number" class="form-control form-control-sm" min="0" value="${item.deposit_confirmations ?? ''}" placeholder="${dep}"></td>
+                            <td style="max-width:160px"><input type="number" class="form-control form-control-sm" min="0" value="${item.withdraw_confirmations ?? ''}" placeholder="${wdr}"></td>
+                            <td class="small text-muted">min: ${min || '-'}, dep: ${dep || '-'}, wdr: ${wdr || '-'}</td>
+                        </tr>
+                    `;
+                }).join('');
+                tbody.innerHTML = rows || '<tr><td colspan="6" class="text-muted">No networks.</td></tr>';
+            }
+
+            document.getElementById('saveNetworkSettingsBtn').addEventListener('click', async () => {
+                if (!currentNetworkUserId) return;
+                const rows = Array.from(document.querySelectorAll(
+                    '#networkSettingsTable tbody tr[data-network-id]'));
+                const payload = {
+                    network_settings: rows.map(tr => {
+                        const inputs = tr.querySelectorAll('input');
+                        const min = inputs[0].value;
+                        const dep = inputs[1].value;
+                        const wdr = inputs[2].value;
+                        return {
+                            asset_network_id: parseInt(tr.getAttribute('data-network-id')),
+                            min_deposit: min === '' ? null : parseFloat(min),
+                            deposit_confirmations: dep === '' ? null : parseInt(dep),
+                            withdraw_confirmations: wdr === '' ? null : parseInt(wdr),
+                        };
+                    })
+                };
+                const res = await fetch(`/admin/users/${currentNetworkUserId}/network-settings`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrf,
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+                if (res.ok) {
+                    const modalEl = document.getElementById('networkSettingsModal');
+                    bootstrap.Modal.getInstance(modalEl)?.hide();
+                    window.location.reload();
+                } else {
+                    alert('Failed to save network settings');
+                }
+            });
         })();
     </script>
 @endsection

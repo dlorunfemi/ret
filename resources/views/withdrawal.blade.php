@@ -68,7 +68,7 @@
                                                     <small class="text-muted">Popular Coins 🔥</small><br>
                                                     <span class="coin-badge">USDT</span>
                                                     <span class="coin-badge">ETH</span>
-                                                    <span class="coin-badge">USDC</span>
+                                                    <!--<span class="coin-badge">USDC</span>-->
                                                     <span class="coin-badge">BTC</span>
                                                 </div>
                                                 <div class="mt-3">
@@ -168,29 +168,29 @@
                                                                     class="badge text-bg-danger text-decoration-none px-3 py-2">Withdraw</a>
                                                             </td>
                                                         </tr>
-                                                        <tr>
-                                                            <th scope="row">
-                                                                <div class="d-flex align-items-center gap-2">
-                                                                    <div class="col-auto"><img
-                                                                            src="{{ asset('img/icon/usdc.png') }}"
-                                                                            width="25" height="25" alt="USDC">
-                                                                    </div>
-                                                                    <div class="col-auto">
-                                                                        <p class="my-auto">USDC</p><small
-                                                                            class="text-muted">USDC</small>
-                                                                    </div>
-                                                                </div>
-                                                            </th>
-                                                            <td class="amt" data-asset="USDC">0</td>
-                                                            <td class="val" data-asset="USDC">$0.00</td>
-                                                            <td class="frozen" data-asset="USDC">0.00</td>
-                                                            <td>
-                                                                <a href="#"
-                                                                    class="badge text-bg-success text-decoration-none px-3 py-2">Deposit</a>
-                                                                <a href="#"
-                                                                    class="badge text-bg-danger text-decoration-none px-3 py-2">Withdraw</a>
-                                                            </td>
-                                                        </tr>
+                                                        <!--<tr>-->
+                                                        <!--    <th scope="row">-->
+                                                        <!--        <div class="d-flex align-items-center gap-2">-->
+                                                        <!--            <div class="col-auto"><img-->
+                                                        <!--                    src="{{ asset('img/icon/usdc.png') }}"-->
+                                                        <!--                    width="25" height="25" alt="USDC">-->
+                                                        <!--            </div>-->
+                                                        <!--            <div class="col-auto">-->
+                                                        <!--                <p class="my-auto">USDC</p><small-->
+                                                        <!--                    class="text-muted">USDC</small>-->
+                                                        <!--            </div>-->
+                                                        <!--        </div>-->
+                                                        <!--    </th>-->
+                                                        <!--    <td class="amt" data-asset="USDC">0</td>-->
+                                                        <!--    <td class="val" data-asset="USDC">$0.00</td>-->
+                                                        <!--    <td class="frozen" data-asset="USDC">0.00</td>-->
+                                                        <!--    <td>-->
+                                                        <!--        <a href="#"-->
+                                                        <!--            class="badge text-bg-success text-decoration-none px-3 py-2">Deposit</a>-->
+                                                        <!--        <a href="#"-->
+                                                        <!--            class="badge text-bg-danger text-decoration-none px-3 py-2">Withdraw</a>-->
+                                                        <!--    </td>-->
+                                                        <!--</tr>-->
                                                         <tr>
                                                             <th scope="row">
                                                                 <div class="d-flex align-items-center gap-2">

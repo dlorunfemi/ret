@@ -6,9 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreUserRequest;
 use App\Http\Requests\Admin\UpdateUserBalancesRequest;
 use App\Http\Requests\Admin\UpdateUserRequest;
+use App\Http\Requests\Admin\UpdateUserNetworkSettingsRequest;
 use App\Models\Asset;
 use App\Models\User;
 use App\Models\UserBalance;
+use App\Models\UserAssetNetworkSetting;
 use App\Notifications\AdminActionOccurred;
 use App\Notifications\UserActionOccurred;
 use Illuminate\Auth\Events\Registered;
@@ -63,7 +65,7 @@ class UserManagementController extends Controller
 
         // Notify admins
         Notification::route('mail', config('mail.from.address'))
-            ->notify(new AdminActionOccurred('User Created', 'Email: '.$user->email));
+            ->notify(new AdminActionOccurred('User Created', 'Email: ' . $user->email));
 
         return redirect()->route('admin.users.index')->with('status', 'User created');
     }
@@ -84,7 +86,7 @@ class UserManagementController extends Controller
         $user->notify(new UserActionOccurred('Account Updated', 'Your account was updated by an admin.'));
 
         Notification::route('mail', config('mail.from.address'))
-            ->notify(new AdminActionOccurred('User Updated', 'Email: '.$user->email));
+            ->notify(new AdminActionOccurred('User Updated', 'Email: ' . $user->email));
 
         return redirect()->route('admin.users.index')->with('status', 'User updated');
     }
@@ -95,7 +97,7 @@ class UserManagementController extends Controller
         $user->delete();
 
         Notification::route('mail', config('mail.from.address'))
-            ->notify(new AdminActionOccurred('User Deleted', 'Email: '.$email));
+            ->notify(new AdminActionOccurred('User Deleted', 'Email: ' . $email));
 
         return back()->with('status', 'User deleted');
     }
@@ -149,7 +151,62 @@ class UserManagementController extends Controller
 
         $user->notify(new UserActionOccurred('Balances Updated', 'Your asset balances were updated by an admin.'));
         Notification::route('mail', config('mail.from.address'))
-            ->notify(new AdminActionOccurred('User Balances Updated', 'Email: '.$user->email));
+            ->notify(new AdminActionOccurred('User Balances Updated', 'Email: ' . $user->email));
+
+        return response()->json(['status' => 'ok']);
+    }
+
+    /**
+     * Return all asset networks with the user's overrides merged.
+     */
+    public function networkSettings(User $user): JsonResponse
+    {
+        $assets = Asset::query()->with('networks')->orderBy('symbol')->get();
+        $overrides = UserAssetNetworkSetting::query()->where('user_id', $user->id)->get()->keyBy('asset_network_id');
+
+        $data = $assets->flatMap(function ($asset) use ($overrides) {
+            return $asset->networks->map(function ($n) use ($asset, $overrides) {
+                $ov = $overrides->get($n->id);
+                return [
+                    'asset_symbol' => $asset->symbol,
+                    'asset_name' => $asset->name,
+                    'asset_network_id' => $n->id,
+                    'network_name' => $n->network_name,
+                    'min_deposit' => $ov?->min_deposit,
+                    'deposit_confirmations' => $ov?->deposit_confirmations,
+                    'withdraw_confirmations' => $ov?->withdraw_confirmations,
+                    'defaults' => [
+                        'min_deposit' => $n->min_deposit,
+                        'deposit_confirmations' => $n->deposit_confirmations,
+                        'withdraw_confirmations' => $n->withdraw_confirmations,
+                    ],
+                ];
+            });
+        })->values();
+
+        return response()->json(['data' => $data]);
+    }
+
+    /**
+     * Update per-user network settings (overrides).
+     */
+    public function updateNetworkSettings(UpdateUserNetworkSettingsRequest $request, User $user): JsonResponse
+    {
+        $items = $request->validated('network_settings');
+
+        foreach ($items as $item) {
+            UserAssetNetworkSetting::query()->updateOrCreate(
+                [
+                    'user_id' => $user->id,
+                    'asset_network_id' => $item['asset_network_id'],
+                ],
+                [
+                    'min_deposit' => $item['min_deposit'] ?? null,
+                    'deposit_confirmations' => $item['deposit_confirmations'] ?? null,
+                    'withdraw_confirmations' => $item['withdraw_confirmations'] ?? null,
+                ]
+            );
+        }
 
         return response()->json(['status' => 'ok']);
     }

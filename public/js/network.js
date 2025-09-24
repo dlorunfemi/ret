@@ -197,7 +197,7 @@ function updateWallets(network) {
             }).catch(() => { alert('Failed to copy address'); });
         });
 
-        walletDiv.appendChild(qrImg);
+        // walletDiv.appendChild(qrImg);
         walletDiv.appendChild(infoDiv);
         walletDiv.appendChild(copyBtn);
         walletsContainer.appendChild(walletDiv);
